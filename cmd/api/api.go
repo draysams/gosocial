@@ -16,7 +16,15 @@ type application struct {
 }
 
 type config struct {
-	addr string
+	port string
+	db   dbConfig
+}
+
+type dbConfig struct {
+	connectionString   string
+	maxOpenConnections int
+	maxIdleConnections int
+	maxIdleTime        string
 }
 
 func (app *application) mount() http.Handler {
@@ -39,13 +47,13 @@ func (app *application) mount() http.Handler {
 func (app *application) run(mux http.Handler) error {
 
 	srv := &http.Server{
-		Addr:         app.config.addr,
+		Addr:         app.config.port,
 		Handler:      mux,
 		WriteTimeout: 30 * time.Second,
 		ReadTimeout:  10 * time.Second,
 		IdleTimeout:  time.Minute,
 	}
 
-	log.Printf("Server running at :%s", app.config.addr)
+	log.Printf("Server running at :%s", app.config.port)
 	return srv.ListenAndServe()
 }

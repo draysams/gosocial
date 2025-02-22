@@ -18,6 +18,7 @@ func main() {
 			maxIdleConnections: env.GetInt("DB_MAX_IDLE_CONNECTIONS", 30),
 			maxIdleTime:        env.GetString("DB_MAX_IDLE_TIME", "15m"),
 		},
+		env: env.GetString("ENV", "development"),
 	}
 
 	db, err := db.New(cfg.db.connectionString, cfg.db.maxOpenConnections, cfg.db.maxIdleConnections, cfg.db.maxIdleTime)

@@ -28,7 +28,7 @@ func (s *CommentStore) Create(ctx context.Context, comment *Comment) error {
 	ctx2, cancel := context.WithTimeout(context.Background(), QueryTimeoutDuration)
 	defer cancel()
 
-	err := s.db.QueryRowContext(ctx2, query, comment.Content, comment.PostID, comment.User.ID).Scan(&comment.ID, &comment.CreatedAt)
+	err := s.db.QueryRowContext(ctx2, query, comment.Content, comment.PostID, comment.UserID).Scan(&comment.ID, &comment.CreatedAt)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (s *CommentStore) Create(ctx context.Context, comment *Comment) error {
 
 func (s *CommentStore) GetCommentsByPostID(ctx context.Context, postID int64) ([]Comment, error) {
 	query := `
-		SELECT c.id, c.content, c.post_id, users.username, users.id, c.created_at
+		SELECT c.id, c.content, c.post_id, c.user_id ,users.username, users.id, c.created_at
 		FROM comments c
 		JOIN users ON c.user_id = users.id
 		WHERE c.post_id = $1
@@ -53,7 +53,7 @@ func (s *CommentStore) GetCommentsByPostID(ctx context.Context, postID int64) ([
 	comments := []Comment{}
 	for rows.Next() {
 		var comment Comment
-		err := rows.Scan(&comment.ID, &comment.Content, &comment.PostID, &comment.User.Username, &comment.User.ID, &comment.CreatedAt)
+		err := rows.Scan(&comment.ID, &comment.Content, &comment.PostID, &comment.UserID, &comment.User.Username, &comment.User.ID, &comment.CreatedAt)
 		if err != nil {
 			return nil, err
 		}

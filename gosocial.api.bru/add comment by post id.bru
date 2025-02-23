@@ -1,0 +1,17 @@
+meta {
+  name: add comment by post id
+  type: http
+  seq: 8
+}
+
+post {
+  url: http://localhost:8080/v1/posts/2/comment
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "content": "this is a comment"
+  }
+}

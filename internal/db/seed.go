@@ -173,8 +173,6 @@ func generatePosts(n int, users []store.User) []store.Post {
 	posts := make([]store.Post, n)
 
 	for i := 0; i < n; i++ {
-		// userId starts from 2 and is incremented by 1
-
 		posts[i] = store.Post{
 			Title:   titles[i%len(titles)],
 			Content: contents[i%len(contents)],
@@ -192,8 +190,8 @@ func generateComments(n int, posts []store.Post, users []store.User) []store.Com
 	for i := 0; i < n; i++ {
 		comments[i] = store.Comment{
 			Content: commentSlice[i%len(commentSlice)],
-			PostID:  posts[i%len(posts)].ID,
-			UserID:  users[i%len(users)].ID,
+			PostID:  int64(i % len(posts)),
+			UserID:  int64(i % len(users)),
 		}
 	}
 

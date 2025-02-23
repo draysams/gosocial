@@ -18,15 +18,17 @@ type CommentStore struct {
 	db *sql.DB
 }
 
-func (s *CommentStore) Create(comment *Comment) error {
+func (s *CommentStore) Create(ctx context.Context, comment *Comment) error {
 	query := `
 		INSERT INTO comments (content, post_id, user_id)
 		VALUES ($1, $2, $3)
 		RETURNING id, created_at
 	`
-	row := s.db.QueryRow(query, comment.Content, comment.PostID, comment.UserID)
 
-	err := row.Scan(&comment.ID, &comment.CreatedAt)
+	ctx2, cancel := context.WithTimeout(context.Background(), QueryTimeoutDuration)
+	defer cancel()
+
+	err := s.db.QueryRowContext(ctx2, query, comment.Content, comment.PostID, comment.User.ID).Scan(&comment.ID, &comment.CreatedAt)
 	if err != nil {
 		return err
 	}

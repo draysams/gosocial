@@ -31,5 +31,11 @@ go run cmd/migrate/migrate.go -direction=down
 go run cmd/migrate/migrate.go -direction=up
 ```
 
+## Seeding
+
+```sql
+go run cmd/migrate/seed/main.go
+```
+
 1. Have line numbers in your editor
 2. Name your files based on folder structure. store/posts.go = store/postStore.go and api/posts.go = api/postApi.go = helps differentiate the files

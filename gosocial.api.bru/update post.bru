@@ -1,0 +1,19 @@
+meta {
+  name: update post
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/v1/posts/3
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "third post",
+    "content": "this is my third post",
+    "tags": ["tag1", "tag2"]
+  }
+}

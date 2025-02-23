@@ -1,0 +1,19 @@
+meta {
+  name: create post
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/v1/posts
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "first post",
+    "content": "this is my first post",
+    "tags": ["tag1"]
+  }
+}
